@@ -9,7 +9,7 @@ export const getAllMetricsHandler = async (event) => {
     if (event.httpMethod !== 'GET') {
         throw new Error(`getAllMetrics only accept GET method, you tried: ${event.httpMethod}`);
     }
-    console.info('received:', event);
+    console.info('received:', tableName);
 
     var params = {
         TableName : tableName
@@ -20,6 +20,14 @@ export const getAllMetricsHandler = async (event) => {
         var items = data.Items;
     } catch (err) {
         console.log("Error", err);
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify({
+                error: err.message
+            })
+        };
+
+        return response;
     }
 
     const response = {

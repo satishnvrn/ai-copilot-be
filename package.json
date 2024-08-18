@@ -12,7 +12,10 @@
         "jest": "^29.2.1"
     },
     "scripts": {
-        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+        "start": "sam local start-api --env-vars env.json 2>&1 | tr '\r' '\n'",
+        "build": "sam build",
+        "deploy": "sam deploy --guided"
     },
     "jest": {
         "testMatch": [
