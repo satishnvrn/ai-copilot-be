@@ -50,6 +50,8 @@ Resources:
           AttributeType: "S"
         - AttributeName: "date"
           AttributeType: "S"
+        - AttributeName: "metricDate"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "metricId"
           KeyType: "HASH"
@@ -64,6 +66,17 @@ Resources:
           - AttributeName: "product"
             KeyType: "HASH"
           - AttributeName: "date"
+            KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 2
+            WriteCapacityUnits: 2
+        - IndexName: "product_metric_date_ix"
+          KeySchema:
+          - AttributeName: "product"
+            KeyType: "HASH"
+          - AttributeName: "metricDate"
             KeyType: "RANGE"
           Projection:
             ProjectionType: "ALL"
