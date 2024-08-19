@@ -6,7 +6,7 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 const tableName = process.env.PRODUCT_METRICS_TABLE;
 
 const getDateFilterValue = (period) => {
- const currentDate = new Date().getTime();
+  const currentDate = new Date().getTime();
   switch (period) {
     case "1d":
       return new Date(currentDate - 24 * 60 * 60 * 1000).toISOString();
@@ -46,7 +46,9 @@ export const getAllMetricsHandler = async (event) => {
   }
 
   if (minQuality) {
-    params.FilterExpression = params.FilterExpression ? `${params.FilterExpression} and quality >= :minQuality` : "quality >= :minQuality";
+    params.FilterExpression = params.FilterExpression
+      ? `${params.FilterExpression} and quality >= :minQuality`
+      : "quality >= :minQuality";
     params.ExpressionAttributeValues[":minQuality"] = Number(minQuality);
   }
 
@@ -60,6 +62,11 @@ export const getAllMetricsHandler = async (event) => {
       body: JSON.stringify({
         error: err.message,
       }),
+      headers: {
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*", // Allow from anywhere
+        "Access-Control-Allow-Methods": "GET", // Allow only GET request
+      },
     };
 
     return response;
@@ -68,6 +75,11 @@ export const getAllMetricsHandler = async (event) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify(items),
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*", // Allow from anywhere
+      "Access-Control-Allow-Methods": "GET", // Allow only GET request
+    },
   };
 
   console.info(
